@@ -1,32 +1,27 @@
-# 使用 Ubuntu 作为基础镜像
-FROM ubuntu:20.04
+# 使用包含 JDK 17 的基础镜像
+FROM bellsoft/liberica-openjdk-alpine:17
 
-# 避免交互式前端
-ENV DEBIAN_FRONTEND=noninteractive
-
-# 安装必要的工具
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    bash \
-    && rm -rf /var/lib/apt/lists/*
+# 安装必要的包
+RUN apk add --no-cache wget unzip maven
 
 # 设置工作目录
-WORKDIR /root
+WORKDIR /app
 
-# 下载并解压 netdisk-fast-download
-RUN wget -O netdisk-fast-download.zip https://github.com/qaiu/netdisk-fast-download/releases/download/0.1.7-release-fixed3/netdisk-fast-download-bin-fixed3.zip \
-    && unzip netdisk-fast-download.zip \
-    && rm netdisk-fast-download.zip
+# 下载最新的发布版本
+ARG DOWNLOAD_URL=https://github.com/qaiu/netdisk-fast-download/releases/download/0.1.7-release-fixed3/netdisk-fast-download-bin-fixed3.zip
+RUN wget -O netdisk-fast-download.zip $DOWNLOAD_URL && \
+    unzip netdisk-fast-download.zip && \
+    rm netdisk-fast-download.zip
 
-# 进入 netdisk-fast-download 目录
-WORKDIR /root/netdisk-fast-download
+# 复制应用配置文件，如果有必要的话
+# COPY application.properties /app/config/
 
-# # 运行安装脚本
-# RUN bash service-install.sh
+# 构建项目
+WORKDIR /app/netdisk-fast-download
+RUN mvn clean package
 
-# 暴露端口 6400
+# 暴露应用所需的端口，根据应用实际端口调整
 EXPOSE 6400
 
-# 设置容器启动命令
-CMD ["./service-install.sh"]
+# 配置容器启动命令
+CMD ["java", "-jar", "web-service/target/netdisk-fast-download.jar"]
