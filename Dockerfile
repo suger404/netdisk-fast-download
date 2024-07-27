@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /root
 
 # 下载并解压 netdisk-fast-download
-RUN wget -O netdisk-fast-download.zip https://github.com/qaiu/netdisk-fast-download/releases/download/0.1.7-release-fixed2/netdisk-fast-download-bin-fixed2.zip \
+RUN wget -O netdisk-fast-download.zip https://github.com/qaiu/netdisk-fast-download/releases/download/0.1.7-release-fixed3/netdisk-fast-download-bin-fixed3.zip \
     && unzip netdisk-fast-download.zip \
     && rm netdisk-fast-download.zip
 
