@@ -2,7 +2,7 @@
 FROM bellsoft/liberica-openjdk-alpine:17
 
 # 安装必要的包
-RUN apk add --no-cache wget unzip maven
+RUN apk add --no-cache wget unzip dos2unix
 
 # 设置工作目录
 WORKDIR /app
@@ -13,17 +13,15 @@ RUN wget -O netdisk-fast-download.zip $DOWNLOAD_URL && \
     unzip netdisk-fast-download.zip && \
     rm netdisk-fast-download.zip
 
-# 复制应用配置文件，如果有必要的话
-# COPY application.properties /app/config/
+# 确保执行权限，并修正可能的Windows换行符问题
+RUN chmod +x /app/netdisk-fast-download/run.sh && \
+    dos2unix /app/netdisk-fast-download/run.sh
 
-# 列出目录内容来确认文件存在
-RUN ls -la /app/netdisk-fast-download/
-
-# 确保执行权限
-RUN chmod +x /app/netdisk-fast-download/run.sh
+# 查看run.sh的首行
+RUN head -n 1 /app/netdisk-fast-download/run.sh
 
 # 暴露应用所需的端口，根据应用实际端口调整
-EXPOSE 6400
+EXPOSE 8080
 
 # 配置容器启动命令
 CMD ["/app/netdisk-fast-download/run.sh"]
