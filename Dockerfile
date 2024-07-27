@@ -16,6 +16,8 @@ RUN wget -O netdisk-fast-download.zip $DOWNLOAD_URL && \
 # 复制应用配置文件，如果有必要的话
 # COPY application.properties /app/config/
 
+# 列出目录内容来确认文件存在
+RUN ls -la /app/netdisk-fast-download/
 
 # 确保执行权限
 RUN chmod +x /app/netdisk-fast-download/run.sh
