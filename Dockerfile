@@ -25,5 +25,8 @@ WORKDIR /root/netdisk-fast-download
 # # 运行安装脚本
 # RUN bash service-install.sh
 
+# 暴露端口 6400
+EXPOSE 6400
+
 # 设置容器启动命令
 CMD ["./service-install.sh"]
