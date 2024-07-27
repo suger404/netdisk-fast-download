@@ -22,8 +22,8 @@ RUN wget -O netdisk-fast-download.zip https://github.com/qaiu/netdisk-fast-downl
 # 进入 netdisk-fast-download 目录
 WORKDIR /root/netdisk-fast-download
 
-# 运行安装脚本
-RUN bash service-install.sh
+# # 运行安装脚本
+# RUN bash service-install.sh
 
 # 设置容器启动命令
-CMD ["bash", "-c", "tail -f /dev/null"]
+CMD ["./service-install.sh"]
