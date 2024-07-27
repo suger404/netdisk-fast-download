@@ -16,12 +16,12 @@ RUN wget -O netdisk-fast-download.zip $DOWNLOAD_URL && \
 # 复制应用配置文件，如果有必要的话
 # COPY application.properties /app/config/
 
-# 构建项目
-WORKDIR /app/netdisk-fast-download
-RUN mvn clean package
+
+# 确保执行权限
+RUN chmod +x /app/netdisk-fast-download/run.sh
 
 # 暴露应用所需的端口，根据应用实际端口调整
 EXPOSE 6400
 
 # 配置容器启动命令
-CMD ["java", "-jar", "web-service/target/netdisk-fast-download.jar"]
+CMD ["/app/netdisk-fast-download/run.sh"]
